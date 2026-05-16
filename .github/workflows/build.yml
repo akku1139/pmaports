@@ -68,6 +68,7 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           pushd /tmp/postmarketOS-export/
+          find
           # pmbootstrap creates symlinks to non-existent files
           find . -type l -print0 | while IFS= read -r -d $'\0' symlink; do
             target=$(readlink "$symlink")
@@ -75,6 +76,7 @@ jobs:
               rm "$symlink"
             fi
           done
+          rm -rf dtbs
           popd
 
           cat << EOL > /tmp/release_note.txt
