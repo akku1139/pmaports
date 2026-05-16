@@ -1,7 +1,7 @@
 maintainer="Affe Null <affenull2345@gmail.com>"
 _flavor="postmarketos-unisoc-ums9230"
 pkgname=linux-$_flavor
-pkgver=6.19.0_rc1_git20251214
+pkgver=7.1-rc1-akku1
 pkgrel=0
 pkgdesc="Linux kernel with patches for Unisoc UMS9230 devices"
 arch="aarch64"
@@ -29,8 +29,9 @@ makedepends="
 
 _tag="v6.19-rc1-ums9230-0"
 _config="config-$_flavor.$arch"
+# ums9230/blackview-tab15pro
 source="
-	linux-$_tag.tar.gz::https://codeberg.org/ums9230-mainline/linux/archive/$_tag.tar.gz
+	linux-$_tag.tar.gz::https://github.com/akku1139/linux/archive/d002ed06d2b711f0cce6d8d2b8c2ea6c994534bc.tar.gz
 	$_config
 "
 builddir="$srcdir/linux"
@@ -61,6 +62,6 @@ package() {
 }
 
 sha512sums="
-d37c4db542d9449d55095ef3584d31fd6aac5bcb7c71976ef2b8d5b345f289b29ce93d3b83fb37f7e477a80cf9c742ddd996556639352805d5cfe70c0fdd3cdc  linux-v6.19-rc1-ums9230-0.tar.gz
+f45c8f801489992838d1d01c4d18ca92f5ca5c1f2a65574c55143945efcc280bfb6121b89cba92d8b79495dfbed1e584ac363656cc88a71ca4239435556298b4  linux-v6.19-rc1-ums9230-0.tar.gz
 d08eb9523e01373b81d4416fd8798763165fabfeac34317f9ea4851b5aea627a2a6b2cdd9fd80bc5388300572603ed7f733cc13841a7e8d30a74e66e3adf6833  config-postmarketos-unisoc-ums9230.aarch64
 "
