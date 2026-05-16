@@ -7,7 +7,7 @@ deviceinfo_name="Blackview Tab 15 Pro"
 deviceinfo_manufacturer="Blackview"
 deviceinfo_codename="blackview-tab15pro"
 deviceinfo_year="2023"
-deviceinfo_dtb=""
+deviceinfo_dtb="sprd/ums9230-blackview-tab15pro"
 deviceinfo_arch="aarch64"
 
 # Device related
