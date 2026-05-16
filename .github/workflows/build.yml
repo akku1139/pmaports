@@ -86,4 +86,4 @@ jobs:
           ```
           EOL
 
-          gh release create "build-${{ github.ref_name }}-$(date +%Y-%m-%d-%H-%M-%S)" --notes-file /tmp/release_note.txt '/tmp/postmarketOS-export/*'
+          gh release create "build-${{ inputs.device || 'blackview-tab15pro' }}-${{ inputs.ui || 'console' }}-$(date +%Y-%m-%d-%H-%M-%S)" --notes-file /tmp/release_note.txt '/tmp/postmarketOS-export/*'
