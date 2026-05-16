@@ -80,10 +80,10 @@ jobs:
           cat << EOL > /tmp/release_note.txt
           ## config
 
-          ```yml
+          \`\`\`yml
           device: ${{ inputs.device || 'blackview-tab15pro' }}
           ui: ${{ inputs.ui || 'console' }}
-          ```
+          \`\`\`
           EOL
 
           gh release create "build-${{ inputs.device || 'blackview-tab15pro' }}-${{ inputs.ui || 'console' }}-$(date +%Y-%m-%d-%H-%M-%S)" --notes-file /tmp/release_note.txt '/tmp/postmarketOS-export/*'
