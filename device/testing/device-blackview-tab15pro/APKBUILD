@@ -12,8 +12,9 @@ depends="
 	linux-postmarketos-unisoc-ums9230
 	mkbootimg
 	postmarketos-base
+	android-tools
 "
-makedepends="devicepkg-dev android-tools"
+makedepends="devicepkg-dev"
 source="
 	deviceinfo
 	modules-initfs
