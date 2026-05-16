@@ -1,0 +1,75 @@
+name: Build
+
+on:
+  push:
+  workflow_dispatch:
+    inputs:
+      device:
+        type: string
+        required: false
+
+permissions:
+  packages: write
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Cache
+        id: cache
+        uses: actions/cache@v5
+        with:
+          path: |
+            /home/builder/.local/var/pmbootstrap
+            .
+          key: cache-${{ github.sha }}
+          restore-keys: cache-
+
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Setup env
+        run: |
+          set -x
+          cd ..
+          if [ -d pmbootstrap ]; then
+            git -C pmbootstrap pull
+          else
+            git clone --depth=1 https://gitlab.postmarketos.org/postmarketOS/pmbootstrap.git pmbootstrap
+          fi
+          PMB="`pwd`/pmbootstrap/pmbootstrap.py --details-to-stdout -y"
+
+          yes '' | $PMB --details-to-stdout init
+          $PMB work_migrate
+          $PMB -q shutdown
+
+      - name: Build
+        run: |
+          # https://gitlab.postmarketos.org/postmarketOS/pmbootstrap/-/blob/b982e45c8d1c803360e1d8227cf88c5a4c607979/.gitlab-ci.yml
+          # https://gitlab.postmarketos.org/postmarketOS/build.postmarketos.org/-/blob/bd94e26981da2b44020db26e2d2f1d994194de2c/bpo/jobs/build_image.py
+          set -x
+          PMB="sudo -u builder `pwd`/../pmbootstrap/pmbootstrap.py --details-to-stdout -y"
+
+          $PMB config device ${{ inputs.device || 'blackview-tab15pro' }}
+          $PMB config ui console
+          $PMB install --password 147147
+          $PMB export
+          $PMB shutdown
+
+      - name: Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          pushd /tmp/postmarketOS-export/
+          # pmbootstrap creates symlinks to non-existent files
+          find . -type l -print0 | while IFS= read -r -d $'\0' symlink; do
+            target=$(readlink "$symlink")
+            if [ ! -e "$target" ]; then
+              rm "$symlink"
+            fi
+          done
+
+          popd
+          gh release create "build-${{ github.ref_name }}-$(date +%Y-%m-%d-%H-%M-%S)" '/tmp/postmarketOS-export/*'
