@@ -44,8 +44,14 @@ jobs:
           fi
           PMB="`pwd`/pmbootstrap/pmbootstrap.py --details-to-stdout -y"
           popd
-          $PMB config aports $(pwd)
-          yes '' | $PMB init
+          cat << EOL | $PMB init
+
+          /home/runner/work/pmaports/pmaports
+
+
+
+          
+          EOL
           $PMB work_migrate
           $PMB -q shutdown
 
