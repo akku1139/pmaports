@@ -9,7 +9,7 @@ license="MIT"
 arch="aarch64"
 options="!check !archcheck"
 depends="
-	linux-CHANGEME
+	linux-postmarketos-unisoc-ums9230
 	mkbootimg
 	postmarketos-base
 "
