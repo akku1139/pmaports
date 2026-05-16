@@ -44,8 +44,8 @@ jobs:
           fi
           PMB="`pwd`/pmbootstrap/pmbootstrap.py --details-to-stdout -y"
           popd
-          yes '' | $PMB init
           $PMB config aports $(pwd)
+          yes '' | $PMB init
           $PMB work_migrate
           $PMB -q shutdown
 
