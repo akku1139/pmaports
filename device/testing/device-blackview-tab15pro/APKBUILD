@@ -13,7 +13,7 @@ depends="
 	mkbootimg
 	postmarketos-base
 "
-makedepends="devicepkg-dev"
+makedepends="devicepkg-dev android-tools"
 source="
 	deviceinfo
 	modules-initfs
