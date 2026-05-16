@@ -7,6 +7,9 @@ on:
       device:
         type: string
         required: false
+      ui:
+        type: string
+        required: false
 
 permissions:
   packages: write
@@ -50,10 +53,10 @@ jobs:
           # https://gitlab.postmarketos.org/postmarketOS/pmbootstrap/-/blob/b982e45c8d1c803360e1d8227cf88c5a4c607979/.gitlab-ci.yml
           # https://gitlab.postmarketos.org/postmarketOS/build.postmarketos.org/-/blob/bd94e26981da2b44020db26e2d2f1d994194de2c/bpo/jobs/build_image.py
           set -x
-          PMB="sudo -u builder `pwd`/../pmbootstrap/pmbootstrap.py --details-to-stdout -y"
+          PMB="`pwd`/../pmbootstrap/pmbootstrap.py --details-to-stdout -y"
 
           $PMB config device ${{ inputs.device || 'blackview-tab15pro' }}
-          $PMB config ui console
+          $PMB config ui ${{ inputs.ui || 'console' }}
           $PMB install --password 147147
           $PMB export
           $PMB shutdown
@@ -70,6 +73,15 @@ jobs:
               rm "$symlink"
             fi
           done
-
           popd
-          gh release create "build-${{ github.ref_name }}-$(date +%Y-%m-%d-%H-%M-%S)" '/tmp/postmarketOS-export/*'
+
+          cat << EOL > /tmp/release_note.txt
+          ## config
+
+          ```yml
+          device: ${{ inputs.device || 'blackview-tab15pro' }}
+          ui: ${{ inputs.ui || 'console' }}
+          ```
+          EOL
+
+          gh release create "build-${{ github.ref_name }}-$(date +%Y-%m-%d-%H-%M-%S)" --notes-file /tmp/release_note.txt '/tmp/postmarketOS-export/*'
