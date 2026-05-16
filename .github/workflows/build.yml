@@ -36,6 +36,7 @@ jobs:
       - name: Setup env
         run: |
           set -x
+          git remote set-url origin --add https://gitlab.postmarketos.org/postmarketOS/pmaports.git
           pushd ..
           if [ -d pmbootstrap ]; then
             git -C pmbootstrap pull
