@@ -26,7 +26,7 @@ jobs:
         with:
           path: |
             /home/builder/.local/var/pmbootstrap
-            .
+            ..
           key: cache-${{ github.sha }}
           restore-keys: cache-
 
@@ -36,14 +36,14 @@ jobs:
       - name: Setup env
         run: |
           set -x
-          cd ..
+          pushd ..
           if [ -d pmbootstrap ]; then
             git -C pmbootstrap pull
           else
             git clone --depth=1 https://gitlab.postmarketos.org/postmarketOS/pmbootstrap.git pmbootstrap
           fi
           PMB="`pwd`/pmbootstrap/pmbootstrap.py --details-to-stdout -y"
-
+          popd
           yes '' | $PMB init
           $PMB config aports $(pwd)
           $PMB work_migrate
