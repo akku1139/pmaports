@@ -25,8 +25,8 @@ jobs:
         uses: actions/cache@v5
         with:
           path: |
-            /home/builder/.local/var/pmbootstrap
-            ..
+            /home/runner/.local/var/pmbootstrap
+            /home/runner/work/pmaports
           key: cache-${{ github.sha }}
           restore-keys: cache-
 
