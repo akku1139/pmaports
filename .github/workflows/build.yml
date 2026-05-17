@@ -89,3 +89,8 @@ jobs:
           EOL
 
           gh release create "build-${{ inputs.device || 'blackview-tab15pro' }}-${{ inputs.ui || 'console' }}-$(date +%Y-%m-%d-%H-%M-%S)" --notes-file /tmp/release_note.txt '/tmp/postmarketOS-export/*'
+
+      - name: Allow tar to run as root via SUID (for cache)
+        run: |
+          sudo chown root /bin/tar
+          sudo chmod u+s /bin/tar
