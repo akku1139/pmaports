@@ -39,11 +39,12 @@ builddir="$srcdir/linux"
 prepare() {
 	default_prepare
 	#cp "$srcdir/$_config" .config
-	ls
+	cd src
 	make ARCH="$_carch" LLVM=1 defconfig
 }
 
 build() {
+	cd src
 	unset LDFLAGS
 	make ARCH="$_carch" LLVM=1 \
 		KBUILD_BUILD_VERSION="$((pkgrel + 1 ))-postmarketOS"
@@ -51,6 +52,7 @@ build() {
 
 package() {
 	mkdir -p "$pkgdir"/boot
+	cd src
 	make zinstall modules_install dtbs_install \
 		ARCH="$_carch" LLVM=1 \
 		INSTALL_PATH="$pkgdir"/boot \
