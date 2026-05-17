@@ -38,9 +38,9 @@ builddir="$srcdir/linux"
 
 prepare() {
 	default_prepare
-	cp "$srcdir/$_config" .config
-	make ARCH="$_carch" LLVM=1 \
-		KBUILD_BUILD_VERSION="$((pkgrel + 1 ))-postmarketOS" defconfig
+	#cp "$srcdir/$_config" .config
+	ls
+	make ARCH="$_carch" LLVM=1 defconfig
 }
 
 build() {
