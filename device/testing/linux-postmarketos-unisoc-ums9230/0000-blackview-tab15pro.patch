@@ -17,7 +17,7 @@ index 0af83bf5f28a46..0cc46d3cb483b6 100644
  			sp9860g-1h10.dtb		\
  			sp9863a-1h10.dtb		\
  			ums512-1h10.dtb			\
-+			ums9230-blackview-tab15pro.dts	\
++			ums9230-blackview-tab15pro.dtb	\
  			ums9230-reeder-s19mps.dtb	\
  			ums9620-2h10.dtb
 diff --git a/arch/arm64/boot/dts/sprd/ums9230-blackview-tab15pro.dts b/arch/arm64/boot/dts/sprd/ums9230-blackview-tab15pro.dts
