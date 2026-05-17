@@ -32,6 +32,7 @@ _config="config-$_flavor.$arch"
 source="
 	linux-$_tag.tar.gz::https://codeberg.org/ums9230-mainline/linux/archive/$_tag.tar.gz
 	$_config
+	0000-blackview-tab15pro.patch
 "
 builddir="$srcdir/linux"
 
@@ -63,4 +64,5 @@ package() {
 sha512sums="
 d37c4db542d9449d55095ef3584d31fd6aac5bcb7c71976ef2b8d5b345f289b29ce93d3b83fb37f7e477a80cf9c742ddd996556639352805d5cfe70c0fdd3cdc  linux-v6.19-rc1-ums9230-0.tar.gz
 d08eb9523e01373b81d4416fd8798763165fabfeac34317f9ea4851b5aea627a2a6b2cdd9fd80bc5388300572603ed7f733cc13841a7e8d30a74e66e3adf6833  config-postmarketos-unisoc-ums9230.aarch64
+4510a1c59c2fab49c204fd5492b801af81ddd613caf89c6a24f678ab0906c5f7fe61cfe2ac441060217cdf4a2bf5499ce6b838ed70a9bd7b33c2f60fb9b68f7c  0000-blackview-tab15pro.patch
 "
