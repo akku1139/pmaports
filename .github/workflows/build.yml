@@ -76,6 +76,7 @@ jobs:
               rm "$symlink"
             fi
           done
+          mv dtbs/* .
           rm -rf dtbs
           popd
 
