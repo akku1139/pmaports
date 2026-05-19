@@ -1,7 +1,7 @@
 # Co-Maintainer: Achill Gilgenast <achill@achill.org>
 maintainer="Aelin <aelin@postmarketos.org>"
 pkgname=linux-postmarketos-stable
-pkgver=7.0.7
+pkgver=7.0.9
 pkgrel=0
 _kver=${pkgver%.*}
 pkgdesc="Stable Kernel"
@@ -32,6 +32,7 @@ makedepends="
 	elfutils-dev
 	findutils
 	flex
+	kmod
 	linux-headers
 	lld
 	llvm
@@ -54,9 +55,6 @@ replaces="linux-stable"
 # Nathan's fork, he does not have time to upstream them right now but would be
 # happy if someone else did:
 # https://lore.kernel.org/linuxppc-dev/aXs8sgAcci9FKKpx@luna/
-#
-# Patch #4 is the fix for the ESP part of dirtyfrag and applied in mainline,
-# pending backport
 source="
 	linux-$_kver.tar.xz::https://cdn.kernel.org/pub/linux/kernel/v${pkgver%%.*}.x/linux-$_kver.tar.xz
 
@@ -124,16 +122,16 @@ package() {
 }
 
 sha512sums="
-a9d9d4d7349cabcb688c148f5ce777390590628ef320863363016bacd701c8c61348756ca1f869ea41da7716dd73b85ad5b9b447c7ecfadc106c428f9c597cb3  patch-7.0.7.patch.xz
+1a161507d59c389e945dbb7cfb1456df2edf14c8376290584a905e0b602ed79e717f8fe154402f56a8d64a20243772129976884effa140fb25151856a7e3630f  patch-7.0.9.patch.xz
 8c85b708342f8f09ca25b2234b22e93b62b144a9ef919fbb21827f52fa47498e778c79db1559524dd7fb360f95b2ce174171443c1859656c281be41d2b6c5a0b  linux-7.0.tar.xz
 1f11df2480e9f691573283597160b4c806e492cdca4825f3acb3afb70bde43abfab487bcde1f5553b431a702a0039479d041b0ce7859970e706b5a51d2ad8fb0  0001-WIP-arch-powerpc-boot-Support-LLVM-1-in-wrapper-scri.patch
 26521a9c9ea769534095dc4e306babadc8bcbaf03d7faa523c377e41ba0f742ecd0490fa27791d895f729c3ae8845297dca59b4db2475e7f078e689c447430bc  0002-WIP-arch-powerpc-boot-Use-z-notext-for-pseries-image.patch
 302c20c85559fc9b3b2420ed25be1bfbb76c87f2a470e4141c32e9542cf1f5c6b3b5a7847231a3eaa0f6bc0e5942d0c1599e807175dcf5e63469704c3d6adde3  0003-WIP-arch-powerpc-boot-Add-z-norelro.patch
-77d7346a720c17b9517e6dbb0748ccff821ca823ff0d0632e6be188a8eeb7199cf1b0250919a5fb11e573d7f42eeeeba6519562b49778750042de7e0b2b9b55e  config-stable.aarch64
-9800c7b070ab4af4be1ec146a5327abd6971b84ae1b3ab08283d2c9c508c3647259700ee749abdab017673f452ffc698159111141326366377c878b3c285836c  config-stable.armv7
-372d6d667afc8b6fb6fc63f3a366a8e01d027f55ba1a0510bda5aa3cbac7955a593fba6ef4edba2434e940de0a758cb22c733c70331a91ba5e3f4281e6a73cb6  config-stable.loongarch64
-aed1f719411c65975e7587381a6c048748e06cbe9df57d6a0c756ddda699d69552ba7c50b1128aee4fe178e3982473840e59d1384dbe4eec876e1e0c7ac97f62  config-stable.ppc64le
-608400864d9b2e9f73f840143be13b35c85fbd454e9cbd5c5a4516ef160d1653e7425425ca01408e5a5f33f46427926752a6f553c86ab032f698527a9798a87e  config-stable.riscv64
-4a9564050bf274b926ea9370d568375a1ef1e9598015b200bbf059cbbdc9d521298857f818a3833e5ab8bc13d72bde1b278e051816fa917df481900632dd5eba  config-stable.x86
-b932a8cf94ebb94c63a8a971c4cdfd9293dcf3693cc6a32e6ed347af5b90c58df2c2d3d596b6a45748ef31cb78fd3281dd11f73a8375579082d3d31560ad8fcc  config-stable.x86_64
+24348ddf811d1a5da3e30d4be8fce9994384bbc241469e5a95c783a737ce0c46671e1848e5c0b579ac3ba44e3b31eee297d9d61d18780f28c6a9935373131fc1  config-stable.aarch64
+70b1193155d0c26aaafc8371c941eebc2ed0e4440bfa96c6a1da87ecd53eaa2ccaade35f7821d7dc3a9537c27ce0b94cd254755603bf85bb6c88736279c510ce  config-stable.armv7
+362754c8fc619fb3176d2a7060da2d113cc9a576ea1a6a99cd64768b8632421a64c4d582498089edd5e8255b927985e777155f1bcce794f933596515c70b8366  config-stable.loongarch64
+79e2b4dda2db54d9636052bdd8d55a9fd6cdc10deddc18a6a98ad09c4cb906aa14e452b8544c90053f58d1dbfa811fc75ab172256307373b0580097a8cbb638b  config-stable.ppc64le
+e561057ab34ef8bf90b6ce395c199a588d044d9e7a1876ce38b66058d201441ab7bdf23174a79c83e13f2bca9dfd4772665df4e94cad9316dd987b42c3f4855a  config-stable.riscv64
+993bdf85a8a366eaea96f14024256df4cb47c9193ccbef0a60706f63d350459eb92b52713eda6678ebc161e08dec83cc830693afc682da8ff009b399c425dfe0  config-stable.x86
+42d8a7b1ded55091f415ff227933aa371a21eda3cbbb2e08fd94f78154576304c29608b581828dacfb7bd6864f1b2c06682913fdb2227be044d0f39a9f25448d  config-stable.x86_64
 "
