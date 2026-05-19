@@ -27,7 +27,7 @@ makedepends="
 	python3
 "
 
-_tag="4a5b97b821b846f9a25a99a4fdcb3040fd910965"
+_tag="v6.19-rc1-ums9230-0"
 _config="config-$_flavor.$arch"
 source="
 	linux-$_tag.tar.gz::https://codeberg.org/ums9230-mainline/linux/archive/$_tag.tar.gz
