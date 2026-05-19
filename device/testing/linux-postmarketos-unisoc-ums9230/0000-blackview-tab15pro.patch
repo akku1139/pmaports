@@ -1,16 +1,5 @@
-From 0ffab1fb82b636fc69cf46e8e69391e2d8a09ed0 Mon Sep 17 00:00:00 2001
-From: Akari Tsuyukusa <akkun11.open@gmail.com>
-Date: Sat, 16 May 2026 21:51:48 +0900
-Subject: [PATCH 1/2] dt-bindings: add "reeder"
-
-Signed-off-by: Akari Tsuyukusa <akkun11.open@gmail.com>
----
- Documentation/devicetree/bindings/arm/sprd/sprd.yaml   | 5 +++++
- Documentation/devicetree/bindings/vendor-prefixes.yaml | 2 ++
- 2 files changed, 7 insertions(+)
-
 diff --git a/arch/arm64/boot/dts/sprd/Makefile b/arch/arm64/boot/dts/sprd/Makefile
-index 0af83bf5f28a46..0cc46d3cb483b6 100644
+index 0af83bf5f28a46..259d6f6fb234e4 100644
 --- a/arch/arm64/boot/dts/sprd/Makefile
 +++ b/arch/arm64/boot/dts/sprd/Makefile
 @@ -3,5 +3,6 @@ dtb-$(CONFIG_ARCH_SPRD) += sc9836-openphone.dtb 	\
@@ -22,13 +11,13 @@ index 0af83bf5f28a46..0cc46d3cb483b6 100644
  			ums9620-2h10.dtb
 diff --git a/arch/arm64/boot/dts/sprd/ums9230-blackview-tab15pro.dts b/arch/arm64/boot/dts/sprd/ums9230-blackview-tab15pro.dts
 new file mode 100644
-index 00000000000000..5f58d197a974b9
+index 00000000000000..6b824cf0d89c05
 --- /dev/null
 +++ b/arch/arm64/boot/dts/sprd/ums9230-blackview-tab15pro.dts
-@@ -0,0 +1,59 @@
+@@ -0,0 +1,64 @@
 +// SPDX-License-Identifier: (GPL-2.0 OR MIT)
 +/*
-+ * Copyright (C) 2026 Akari Tsuyukusa
++ * Copyright (C) 2026 Akari Tsuyukusa <akkun11.open@gmail.com>
 + */
 +
 +/dts-v1/;
@@ -52,8 +41,8 @@ index 00000000000000..5f58d197a974b9
 +		framebuffer {
 +			compatible = "simple-framebuffer";
 +			memory-region = <&framebuffer_region>;
-+			width = <1920>;
-+			height = <1200>;
++			width = <1200>;
++			height = <1920>;
 +			stride = <(1920 * 4)>;
 +			format = "a8r8g8b8";
 +
@@ -84,4 +73,9 @@ index 00000000000000..5f58d197a974b9
 +			linux,cma-default;
 +		};
 +	};
++};
++
++&usb {
++	dr_mode = "peripheral";
++	status = "okay";
 +};
