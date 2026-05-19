@@ -44,7 +44,7 @@ index 00000000000000..6b824cf0d89c05
 +			width = <1200>;
 +			height = <1920>;
 +			stride = <(1920 * 4)>;
-+			format = "a8r8g8b8";
++			format = "r5g6b5";
 +
 +			status = "okay";
 +		};
