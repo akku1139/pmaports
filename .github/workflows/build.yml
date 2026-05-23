@@ -1,14 +1,14 @@
 name: Build
 
 on:
-  # push:
   workflow_dispatch:
     inputs:
       device:
         type: string
-        required: false
+        required: true
       ui:
         type: string
+        default: console
         required: false
 
 permissions:
@@ -63,8 +63,8 @@ jobs:
           set -x
           PMB="`pwd`/../pmbootstrap/pmbootstrap.py --details-to-stdout -y"
 
-          $PMB config device ${{ inputs.device || 'blackview-tab15pro' }}
-          $PMB config ui ${{ inputs.ui || 'console' }}
+          $PMB config device ${{ inputs.device }}
+          $PMB config ui ${{ inputs.ui }}
           $PMB install --password 147147
           $PMB export
           $PMB shutdown
@@ -75,6 +75,7 @@ jobs:
         run: |
           pushd /tmp/postmarketOS-export/
           find
+          ls -lh
           # pmbootstrap creates symlinks to non-existent files
           find . -type l -print0 | while IFS= read -r -d $'\0' symlink; do
             target=$(readlink "$symlink")
@@ -92,9 +93,9 @@ jobs:
           ## config
 
           \`\`\`yml
-          device: ${{ inputs.device || 'blackview-tab15pro' }}
-          ui: ${{ inputs.ui || 'console' }}
+          device: ${{ inputs.device }}
+          ui: ${{ inputs.ui }}
           \`\`\`
           EOL
 
-          gh release create "build-${{ inputs.device || 'blackview-tab15pro' }}-${{ inputs.ui || 'console' }}-$(date +%Y-%m-%d-%H-%M-%S)" --notes-file /tmp/release_note.txt '/tmp/postmarketOS-export/*'
+          gh release create "build-${{ inputs.device }}-${{ inputs.ui }}-$(date +%Y-%m-%d-%H-%M-%S)" --notes-file /tmp/release_note.txt '/tmp/postmarketOS-export/*'
