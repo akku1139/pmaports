@@ -78,7 +78,6 @@ jobs:
           $PMB config ui ${{ inputs.ui }}
           $PMB install --password 147147
           $PMB export
-          $PMB shutdown
 
       - name: Release
         env:
@@ -110,3 +109,8 @@ jobs:
           EOL
 
           gh release create "build-${{ inputs.device }}-${{ inputs.ui }}-$(date +%Y-%m-%d-%H-%M-%S)" --notes-file /tmp/release_note.txt '/tmp/postmarketOS-export/*'
+
+      - name: Shutdown pmbootstrap
+        run: |
+          PMB="`pwd`/../pmbootstrap/pmbootstrap.py --details-to-stdout -y"
+          $PMB shutdown
