@@ -10,6 +10,10 @@ on:
         type: string
         default: console
         required: false
+      tmate:
+        type: boolean
+        required: false
+        default: false
 
 permissions:
   packages: write
@@ -20,6 +24,13 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - uses: mxschmitt/action-tmate@v3
+        if: ${{ inputs.tmate }}
+        with:
+          detached: true
+        env:
+          GH_TOKEN: ${{ github.token }}
+
       - name: Allow tar to run as root via SUID (for cache)
         run: |
           sudo chown root /bin/tar
