@@ -1,0 +1,116 @@
+name: Build
+
+on:
+  workflow_dispatch:
+    inputs:
+      device:
+        type: string
+        required: true
+      ui:
+        type: string
+        default: console
+        required: false
+      tmate:
+        type: boolean
+        required: false
+        default: false
+
+permissions:
+  packages: write
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: mxschmitt/action-tmate@v3
+        if: ${{ inputs.tmate }}
+        with:
+          detached: true
+        env:
+          GH_TOKEN: ${{ github.token }}
+
+      - name: Allow tar to run as root via SUID (for cache)
+        run: |
+          sudo chown root /bin/tar
+          sudo chmod u+s /bin/tar
+
+      - name: Cache
+        id: cache
+        uses: actions/cache@v5
+        with:
+          path: |
+            /home/runner/.local/var/pmbootstrap
+            /home/runner/work/pmaports
+          key: cache-${{ github.sha }}
+          restore-keys: cache-
+
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Setup env
+        run: |
+          set -x
+          git remote set-url origin --add https://gitlab.postmarketos.org/postmarketOS/pmaports.git
+          pushd ..
+          if [ -d pmbootstrap ]; then
+            git -C pmbootstrap pull
+          else
+            git clone --depth=1 https://gitlab.postmarketos.org/postmarketOS/pmbootstrap.git pmbootstrap
+          fi
+          PMB="`pwd`/pmbootstrap/pmbootstrap.py --details-to-stdout -y"
+          popd
+          yes '' | $PMB init
+          $PMB zap -hc
+          $PMB config aports $(pwd)
+          $PMB work_migrate
+          $PMB -q shutdown
+
+      - name: Build
+        run: |
+          # https://gitlab.postmarketos.org/postmarketOS/pmbootstrap/-/blob/b982e45c8d1c803360e1d8227cf88c5a4c607979/.gitlab-ci.yml
+          # https://gitlab.postmarketos.org/postmarketOS/build.postmarketos.org/-/blob/bd94e26981da2b44020db26e2d2f1d994194de2c/bpo/jobs/build_image.py
+          set -x
+          PMB="`pwd`/../pmbootstrap/pmbootstrap.py --details-to-stdout -y"
+
+          $PMB config device ${{ inputs.device }}
+          $PMB config ui ${{ inputs.ui }}
+          $PMB install --password 147147
+          $PMB export
+
+      - name: Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          pushd /tmp/postmarketOS-export/
+          find
+          ls -lh
+          # pmbootstrap creates symlinks to non-existent files
+          find . -type l -print0 | while IFS= read -r -d $'\0' symlink; do
+            target=$(readlink "$symlink")
+            if [ ! -e "$target" ]; then
+              rm "$symlink"
+            fi
+          done
+          if [ -d dtbs ]; then
+            mv dtbs/* .
+            rm -rf dtbs
+          fi
+          popd
+
+          cat << EOL > /tmp/release_note.txt
+          ## config
+
+          \`\`\`yml
+          device: ${{ inputs.device }}
+          ui: ${{ inputs.ui }}
+          \`\`\`
+          EOL
+
+          gh release create "build-${{ inputs.device }}-${{ inputs.ui }}-$(date +%Y-%m-%d-%H-%M-%S)" --notes-file /tmp/release_note.txt '/tmp/postmarketOS-export/*'
+
+      - name: Shutdown pmbootstrap
+        run: |
+          PMB="`pwd`/../pmbootstrap/pmbootstrap.py --details-to-stdout -y"
+          $PMB shutdown
