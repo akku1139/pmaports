@@ -19,7 +19,6 @@ depends="
 	mkbootimg
 	postmarketos-base
 	postmarketos-base-downstream
-	!postmarketos-base-ui-audio-backend-pulseaudio
 "
 makedepends="devicepkg-dev"
 
