@@ -1,7 +1,7 @@
 name: Build
 
 on:
-  push:
+  # push:
   workflow_dispatch:
     inputs:
       device:
@@ -51,6 +51,7 @@ jobs:
           PMB="`pwd`/pmbootstrap/pmbootstrap.py --details-to-stdout -y"
           popd
           yes '' | $PMB init
+          $PMB zap -hc
           $PMB config aports $(pwd)
           $PMB work_migrate
           $PMB -q shutdown
