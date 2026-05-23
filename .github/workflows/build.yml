@@ -82,8 +82,10 @@ jobs:
               rm "$symlink"
             fi
           done
-          mv dtbs/* .
-          rm -rf dtbs
+          if [ -d dtbs ]; then
+            mv dtbs/* .
+            rm -rf dtbs
+          fi
           popd
 
           cat << EOL > /tmp/release_note.txt
