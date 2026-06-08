@@ -10,6 +10,10 @@ on:
         type: string
         default: console
         required: false
+      install-params:
+        type: string
+        description: e.g. --filesystem btrfs
+        required: false
       tmate:
         type: boolean
         required: false
@@ -76,7 +80,7 @@ jobs:
 
           $PMB config device ${{ inputs.device }}
           $PMB config ui ${{ inputs.ui }}
-          $PMB install --password 147147
+          $PMB install --password 147147 ${{ inputs.install-params }}
           $PMB export
 
       - name: Release
