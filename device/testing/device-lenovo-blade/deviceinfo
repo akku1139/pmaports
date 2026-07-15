@@ -3,9 +3,9 @@
 # scripts.
 
 deviceinfo_format_version="0"
-deviceinfo_name="Lenovo YOGA Tablet 10"
+deviceinfo_name="Lenovo YOGA Tablet 8/10"
 deviceinfo_manufacturer="Lenovo"
-deviceinfo_codename="lenovo-b8000"
+deviceinfo_codename="lenovo-blade"
 deviceinfo_year="2013"
 deviceinfo_arch="armv7"
 
