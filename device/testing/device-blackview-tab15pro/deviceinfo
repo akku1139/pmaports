@@ -1,0 +1,22 @@
+# Reference: <https://postmarketos.org/deviceinfo>
+# Please use double quotes only. You can source this file in shell
+# scripts.
+
+deviceinfo_format_version="0"
+deviceinfo_name="Blackview Tab 15 Pro"
+deviceinfo_manufacturer="Blackview"
+deviceinfo_codename="blackview-tab15pro"
+deviceinfo_year="2023"
+deviceinfo_dtb="sprd/ums9230-blackview-tab15pro"
+deviceinfo_arch="aarch64"
+
+# Device related
+deviceinfo_chassis="tablet"
+
+# Bootloader related
+deviceinfo_flash_method="fastboot"
+deviceinfo_kernel_cmdline=""
+deviceinfo_generate_bootimg="true"
+deviceinfo_flash_pagesize="4096"
+deviceinfo_bootimg_qcdt="false"
+deviceinfo_header_version="4"
