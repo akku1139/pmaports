@@ -1,0 +1,33 @@
+# Reference: <https://postmarketos.org/devicepkg>
+pkgname=device-lenovo-b8000
+pkgdesc="Lenovo YOGA Tablet 8/10"
+pkgver=1
+pkgrel=0
+url="https://postmarketos.org"
+license="MIT"
+arch="armv7"
+options="!check !archcheck"
+depends="
+	linux-postmarketos-mediatek-mt6589
+	mkbootimg
+	postmarketos-base
+	mtk-mkimage
+"
+makedepends="devicepkg-dev"
+source="
+	deviceinfo
+	modules-initfs
+"
+
+build() {
+	devicepkg_build $startdir $pkgname
+}
+
+package() {
+	devicepkg_package $startdir $pkgname
+}
+
+sha512sums="
+5999c4f3e839685570bc74430756b2be5f7762c904d9351ea4c56ae9509354ffd12034ea9fa090b70059544140eb408122520de3bcfc6931edc132a5dc7b7f88  deviceinfo
+e70bae17df23dcaaaea0e2d3616556f04baa23f8ee1357785c0f539bf97282d8ddff53953e155b72689bb73beb38c2da3d08de2a61e866684edfa10a6593885d  modules-initfs
+"

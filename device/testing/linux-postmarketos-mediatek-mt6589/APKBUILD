@@ -1,0 +1,77 @@
+# Reference: <https://postmarketos.org/vendorkernel>
+# Kernel config based on: arch/arm/configs/(CHANGEME!)
+
+pkgname=linux-lenovo-b8000
+pkgver=7.1
+pkgrel=0
+pkgdesc="Lenovo YOGA Tablet 10 kernel fork"
+arch="armv7"
+_carch="arm"
+_flavor="lenovo-b8000"
+url="https://github.com/TeamYogaBlade2/linux"
+license="GPL-2.0-only"
+options="!strip !check !tracedeps pmb:cross-native"
+makedepends="
+	bash
+	bc
+	bison
+	clang
+	devicepkg-dev
+	findutils
+	flex
+	openssl-dev
+	perl
+	lld
+	llvm
+	grep
+"
+
+#makedepends="bash bc bison devicepkg-dev flex openssl-dev perl gmp-dev mpc1-dev mpfr-dev findutils postmarketos-installkernel"
+
+# Source
+_repository="linux"
+_commit="355ef47d00e02a58bb7c4aafa7ee5a302633fd99"
+_config="config-$_flavor.$arch"
+source="
+	$pkgname-$_commit.tar.gz::https://github.com/TeamYogaBlade2/$_repository/archive/$_commit.tar.gz
+	$_config
+"
+builddir="$srcdir/$_repository-$_commit"
+
+prepare() {
+	default_prepare
+}
+
+build() {
+	unset LDFLAGS
+
+	export ARCH="$_carch"
+	export CROSS_COMPILE=arm-none-eabi-
+	export LLVM=1
+
+	# hack, it shouldn't be here
+	export MAKEFLAGS="-j$(nproc)"
+	make lenovo-blade_defconfig
+
+	make KBUILD_BUILD_VERSION="$((pkgrel + 1 ))-postmarketOS"
+}
+
+package() {
+	mkdir -p "$pkgdir"/boot
+	export LLVM=1
+
+	make zinstall modules_install dtbs_install \
+		ARCH="$_carch" \
+		INSTALL_MOD_STRIP=1 \
+		INSTALL_PATH="$pkgdir"/boot \
+		INSTALL_MOD_PATH="$pkgdir" \
+		INSTALL_DTBS_PATH="$pkgdir/usr/share/dtb"
+
+	install -D "$builddir"/include/config/kernel.release \
+		"$pkgdir/usr/share/kernel/$_flavor/kernel.release"
+}
+
+sha512sums="
+a3d76c773e18b924aff55b59519b88374377f53dfdd185ec508b7f9663a08460596a084f28852fd3fd8b3078571bb2c72f8710bba1764447e1a4fb015006d1f4  linux-lenovo-b8000-355ef47d00e02a58bb7c4aafa7ee5a302633fd99.tar.gz
+be688838ca8686e5c90689bf2ab585cef1137c999b48c70b92f67a5c34dc15697b5d11c982ed6d71be1e1e7f7b4e0733884aa97c3f7a339a8ed03577cf74be09  config-lenovo-b8000.armv7
+"
