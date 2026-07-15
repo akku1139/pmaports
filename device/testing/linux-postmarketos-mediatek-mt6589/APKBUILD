@@ -1,10 +1,10 @@
 # Reference: <https://postmarketos.org/vendorkernel>
 # Kernel config based on: arch/arm/configs/(CHANGEME!)
 
-pkgname=linux-lenovo-b8000
+pkgname=linux-postmarketos-mediatek-mt6589
 pkgver=7.1
 pkgrel=0
-pkgdesc="Lenovo YOGA Tablet 10 kernel fork"
+pkgdesc="Linux for MediaTek MT6589/MT8125/MT8389"
 arch="armv7"
 _carch="arm"
 _flavor="lenovo-b8000"
